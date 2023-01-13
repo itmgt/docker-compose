@@ -54,6 +54,7 @@ services:
 #
 #PASSWORD=$(base64 < /dev/urandom | head -c8); echo "$PASSWORD"; echo -n "$PASSWORD" | sha256sum | tr -d '-'
 #nano conf/users.xml
+#          <password_sha256_hex></password_sha256_hex>
 #
 #
 #sudo docker exec -it clickhouse-clickhouse-server-1 cat /etc/clickhouse-server/config.xml > /app/clickhouse/conf/config.xml
@@ -67,3 +68,7 @@ services:
 #        <default>
 #            <allow_experimental_lightweight_delete>1</allow_experimental_lightweight_delete>
 #        </default>
+#
+#
+#
+#
