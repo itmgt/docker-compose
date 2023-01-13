@@ -1,0 +1,47 @@
+version: '3.9'
+services:
+  clickhouse-server:
+    image: clickhouse/clickhouse-server
+    ports:
+     - "8123:8123"
+     - "9000:9000"
+     - "9009:9009"
+    ulimits:
+      nproc: 65535
+      nofile:
+       soft: 262144
+       hard: 262144
+    volumes:
+      - /app/clickhouse/data:/var/lib/clickhouse
+      - /app/clickhouse/conf/config.xml:/etc/clickhouse-server/config.xml
+      - /app/clickhouse/conf/users.xml:/etc/clickhouse-server/users.xml
+      - /app/clickhouse/logs/trace.log:/var/log/clickhouse-server/clickhouse-server.log
+      - /app/clickhouse/logs/errors.log:/var/log/clickhouse-server/clickhouse-server.err.log
+      - /app/clickhouse/logs:/var/log/clickhouse-server
+    restart: always
+    extra_hosts:
+      - "vm1:192.168.1.18"
+      - "vm2:192.168.1.12"
+      - "vm3:192.168.1.11"
+    hostname: clickhouse-server
+    network_mode: host
+#    networks:
+#      - clickhouse
+#
+  clickhouse-client:
+    image: clickhouse/clickhouse-client
+    depends_on:
+      - clickhouse-server
+    command: ['--host', '192.168.1.20']
+#    command: ['--host', 'clickhouse-server']
+#    entrypoint:
+#      - /bin/sleep
+#    command:
+#      - infinity
+#    networks:
+#      - clickhouse
+    network_mode: host
+
+#networks:
+#  clickhouse:
+#    driver: bridge
